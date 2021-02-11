@@ -14,6 +14,7 @@
 		FC9D815025D02F3A007C3F83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9D814F25D02F3A007C3F83 /* Assets.xcassets */; };
 		FC9D815325D02F3A007C3F83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC9D815125D02F3A007C3F83 /* LaunchScreen.storyboard */; };
 		FC9D815D25D02F84007C3F83 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9D815C25D02F84007C3F83 /* CardView.swift */; };
+		FC9D818125D5C58F007C3F83 /* SwitcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9D818025D5C58F007C3F83 /* SwitcherView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		FC9D815225D02F3A007C3F83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC9D815425D02F3A007C3F83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FC9D815C25D02F84007C3F83 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		FC9D818025D5C58F007C3F83 /* SwitcherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitcherView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				FC9D814625D02F39007C3F83 /* AppDelegate.swift */,
 				FC9D814825D02F39007C3F83 /* SceneDelegate.swift */,
 				FC9D814A25D02F39007C3F83 /* ViewController.swift */,
+				FC9D818025D5C58F007C3F83 /* SwitcherView.swift */,
 				FC9D815C25D02F84007C3F83 /* CardView.swift */,
 				FC9D814C25D02F39007C3F83 /* Main.storyboard */,
 				FC9D814F25D02F3A007C3F83 /* Assets.xcassets */,
@@ -142,6 +145,7 @@
 			files = (
 				FC9D814B25D02F39007C3F83 /* ViewController.swift in Sources */,
 				FC9D814725D02F39007C3F83 /* AppDelegate.swift in Sources */,
+				FC9D818125D5C58F007C3F83 /* SwitcherView.swift in Sources */,
 				FC9D815D25D02F84007C3F83 /* CardView.swift in Sources */,
 				FC9D814925D02F39007C3F83 /* SceneDelegate.swift in Sources */,
 			);
