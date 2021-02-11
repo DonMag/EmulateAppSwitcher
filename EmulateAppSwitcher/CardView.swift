@@ -9,26 +9,16 @@ import UIKit
 
 class CardView: UIView {
 	
+	var theLabels: [UILabel] = []
+	
 	var cardID: Int = 0 {
 		didSet {
-			label1.text = "\(cardID)"
-			label2.text = "\(cardID)"
+			theLabels.forEach {
+				$0.text = "\(cardID)"
+			}
 		}
 	}
-	
-	weak var leading: NSLayoutConstraint?
-	
-	let label1: UILabel = {
-		let v = UILabel()
-		v.translatesAutoresizingMaskIntoConstraints = false
-		return v
-	}()
-	let label2: UILabel = {
-		let v = UILabel()
-		v.translatesAutoresizingMaskIntoConstraints = false
-		return v
-	}()
-	
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		commonInit()
@@ -38,17 +28,33 @@ class CardView: UIView {
 		commonInit()
 	}
 	func commonInit() -> Void {
-		addSubview(label1)
-		addSubview(label2)
 		
-		NSLayoutConstraint.activate([
-			label1.topAnchor.constraint(equalTo: topAnchor, constant: 10.0),
-			label1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10.0),
-			label2.centerXAnchor.constraint(equalTo: centerXAnchor),
-			label2.centerYAnchor.constraint(equalTo: centerYAnchor),
-		])
+		for i in 1...5 {
+			let v = UILabel()
+			v.font = .systemFont(ofSize: 24.0)
+			v.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(v)
+			switch i {
+			case 1:
+				v.topAnchor.constraint(equalTo: topAnchor, constant: 10.0).isActive = true
+				v.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0).isActive = true
+			case 2:
+				v.topAnchor.constraint(equalTo: topAnchor, constant: 10.0).isActive = true
+				v.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
+			case 3:
+				v.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10.0).isActive = true
+				v.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0).isActive = true
+			case 4:
+				v.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10.0).isActive = true
+				v.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
+			default:
+				v.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+				v.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+			}
+			theLabels.append(v)
+		}
 		
-		layer.cornerRadius = 10
+		layer.cornerRadius = 6
 		
 		// border
 		layer.borderWidth = 1.0
