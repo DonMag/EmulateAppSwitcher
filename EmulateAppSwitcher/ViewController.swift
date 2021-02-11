@@ -25,10 +25,11 @@ class ViewController: UIViewController {
 		let g = view.safeAreaLayoutGuide
 		
 		NSLayoutConstraint.activate([
-			switcherView.topAnchor.constraint(equalTo: g.topAnchor, constant: 20.0),
-			switcherView.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 20.0),
-			switcherView.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -20.0),
-			switcherView.bottomAnchor.constraint(equalTo: g.bottomAnchor, constant: -20.0),
+			// constrain switcher view to all 4 sides of safe area
+			switcherView.topAnchor.constraint(equalTo: g.topAnchor, constant: 0.0),
+			switcherView.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 0.0),
+			switcherView.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: 0.0),
+			switcherView.bottomAnchor.constraint(equalTo: g.bottomAnchor, constant: 0.0),
 		])
 		
 	}

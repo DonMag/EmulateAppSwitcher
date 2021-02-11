@@ -15,6 +15,11 @@ class SwitcherView: UIView {
 	
 	var firstLayout: Bool = true
 
+	// useful during development...
+	//	if true, highlight the current "control" card in yellow
+	//	if false, leave them all cyan
+	let showHighlight: Bool = false
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		commonInit()
@@ -79,10 +84,19 @@ class SwitcherView: UIView {
 					if  let idx1 = cards.firstIndex(of: cc),
 						let idx2 = cards.firstIndex(of: c),
 						idx2 > idx1 {
+						if showHighlight {
+							currentCard?.backgroundColor = .cyan
+						}
 						currentCard = c
+						if showHighlight {
+							currentCard?.backgroundColor = .yellow
+						}
 					}
 				} else {
 					currentCard = c
+					if showHighlight {
+						currentCard?.backgroundColor = .yellow
+					}
 				}
 				break
 			}
@@ -104,6 +118,10 @@ class SwitcherView: UIView {
 			// if we want to "throw" the card, we'd need to
 			//	implement a "future x location" here using velocity
 			//let panSpeed = gesture.velocity(in: view)
+			
+			if showHighlight {
+				currentCard?.backgroundColor = .cyan
+			}
 			
 			// "center" the card
 			doCentering(true)
@@ -129,8 +147,8 @@ class SwitcherView: UIView {
 		while n < cards.count - 1 {
 			let nextCard = cards[n + 1]
 			// get percent distance of leading edge of relative card
-			//	to 30% of the view width
-			let pct = relativeCard.frame.origin.x / (self.bounds.width * 0.3)
+			//	to 33% of the view width
+			let pct = relativeCard.frame.origin.x / (self.bounds.width * 1.0 / 3.0)
 			// move next card that percentage of the width of a card
 			nextCard.frame.origin.x = relativeCard.frame.origin.x + (relativeCard.frame.size.width * min(pct, 1.0))
 			relativeCard = nextCard
@@ -197,7 +215,7 @@ class SwitcherView: UIView {
 		}
 		
 		// center of control card will be offset to the right of center
-		var newX = self.bounds.width * 0.575
+		var newX = self.bounds.width * 0.6
 		if controlCard == cards.last {
 			// if it's the Top card, center it
 			newX = self.bounds.width * 0.5
