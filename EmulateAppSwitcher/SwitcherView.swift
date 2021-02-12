@@ -32,8 +32,8 @@ class SwitcherView: UIView {
 		
 		clipsToBounds = true
 		
-		// add 8 "cards" to the view
-		for i in 1...8 {
+		// add 20 "cards" to the view
+		for i in 1...20 {
 			let v = CardView()
 			v.backgroundColor = .cyan
 			v.cardID = i
@@ -66,7 +66,7 @@ class SwitcherView: UIView {
 						}
 						thisCard.isHidden = false
 					}
-					doCentering(false)
+					doCentering(for: cards.last!)
 				}
 			}
 		}
@@ -115,16 +115,24 @@ class SwitcherView: UIView {
 			}
 			
 		case .ended:
-			// if we want to "throw" the card, we'd need to
-			//	implement a "future x location" here using velocity
-			//let panSpeed = gesture.velocity(in: view)
-			
 			if showHighlight {
 				currentCard?.backgroundColor = .cyan
 			}
 			
-			// "center" the card
-			doCentering(true)
+			guard let controlCard = currentCard else {
+				return
+			}
+			
+			if let idx = cards.firstIndex(of: controlCard) {
+				// use pan velocity to "throw" the cards
+				let velocity = gesture.velocity(in: self)
+				// convert to a reasonable Int value
+				let offset: Int = Int(floor(velocity.x / 500.0))
+				// step up or down in array of cards based on velocity
+				let newIDX = max(min(idx - offset, cards.count - 1), 0)
+				doCentering(for: cards[newIDX])
+			}
+
 			currentCard = nil
 			
 		default:
@@ -150,7 +158,7 @@ class SwitcherView: UIView {
 			//	to 33% of the view width
 			let pct = relativeCard.frame.origin.x / (self.bounds.width * 1.0 / 3.0)
 			// move next card that percentage of the width of a card
-			nextCard.frame.origin.x = relativeCard.frame.origin.x + (relativeCard.frame.size.width * min(pct, 1.0))
+			nextCard.frame.origin.x = relativeCard.frame.origin.x + (relativeCard.frame.size.width * pct) // min(pct, 1.0))
 			relativeCard = nextCard
 			n += 1
 		}
@@ -190,18 +198,9 @@ class SwitcherView: UIView {
 		
 	}
 	
-	func getControlCard() -> CardView? {
-		// get the card whose Leading edge is closest to the center
-		let halfWidth = self.bounds.width * 0.5
-		let centerCard = cards.min { a, b in abs(a.frame.minX - halfWidth) < abs(b.frame.minX - halfWidth) }
-		return centerCard
-	}
-	
-	func doCentering(_ animated: Bool) -> Void {
+	func doCentering(for cCard: CardView) -> Void {
 		
-		guard let cCard = getControlCard(),
-			  let idx = cards.firstIndex(of: cCard)
-		else {
+		guard let idx = cards.firstIndex(of: cCard) else {
 			return
 		}
 		
