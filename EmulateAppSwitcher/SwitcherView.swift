@@ -76,7 +76,8 @@ class SwitcherView: UIView {
 		
 		let translation = gesture.translation(in: self)
 		
-		var pt = gesture.location(in: self)
+		let gpt = gesture.location(in: self)
+		var pt = gpt
 		pt.y = self.bounds.midY
 		for c in cards.reversed() {
 			if c.frame.contains(pt) {
@@ -174,7 +175,7 @@ class SwitcherView: UIView {
 			//	to half the view width
 			let pct = relativeCard.frame.origin.x / self.bounds.width
 			// move prev card that percentage of one-quarter of the view width
-			prevCard.frame.origin.x = (self.bounds.width * 0.25) * pct
+			prevCard.frame.origin.x = (self.bounds.width * 1.0 / 3.0) * pct
 			relativeCard = prevCard
 			n -= 1
 		}
