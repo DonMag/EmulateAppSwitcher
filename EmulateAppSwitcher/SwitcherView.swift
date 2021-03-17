@@ -98,7 +98,6 @@ class SwitcherView: UIView {
 						}
 						currentCard = c
 						cardStartPoint = c.frame.origin
-						print("cx:", c.frame.origin.x)
 						gesture.setTranslation(.zero, in: self)
 						translation.x = 0.0
 						if showHighlight {
@@ -133,97 +132,18 @@ class SwitcherView: UIView {
 			}
 			if let controlCard = currentCard {
 				if draggingIntent == .vertical {
-					// update card leading edge
+					// update card top edge
 					controlCard.frame.origin.y = cardStartPoint.y + translation.y
-					// don't allow drag left past 1.0
-					//controlCard.frame.origin.x = max(controlCard.frame.origin.x, 1.0)
-					// update the positions for the rest of the cards
-					//updateCards(controlCard)
 				} else {
 					// update card leading edge
 					controlCard.frame.origin.x = cardStartPoint.x + translation.x
 					// don't allow drag left past 1.0
 					controlCard.frame.origin.x = max(controlCard.frame.origin.x, 1.0)
-					// update the positions for the rest of the cards
-					//updateCards(controlCard)
-					//gesture.setTranslation(.zero, in: self)
 				}
-				UIView.animate(withDuration: 0.1, animations: {
-					self.updateCards(controlCard)
-				})
-			}
-			
-		case .ended:
-			if showHighlight {
-				currentCard?.backgroundColor = .cyan
-			}
-			
-			guard let controlCard = currentCard else {
-				return
-			}
-			
-			if let idx = cards.firstIndex(of: controlCard) {
-				// use pan velocity to "throw" the cards
-				let velocity = gesture.velocity(in: self)
-				// convert to a reasonable Int value
-				let offset: Int = Int(floor(velocity.x / 500.0))
-				// step up or down in array of cards based on velocity
-				let newIDX = max(min(idx - offset, cards.count - 1), 0)
-				doCentering(for: cards[newIDX])
-			}
-			
-			currentCard = nil
-			
-		default:
-			break
-		}
-		
-	}
-	
-
-	@objc func reldidPan(_ gesture: UIPanGestureRecognizer) -> Void {
-		
-		let translation = gesture.translation(in: self)
-		
-		let gpt = gesture.location(in: self)
-		var pt = gpt
-		pt.y = self.bounds.midY
-		for c in cards.reversed() {
-			if c.frame.contains(pt) {
-				if let cc = currentCard {
-					if  let idx1 = cards.firstIndex(of: cc),
-						let idx2 = cards.firstIndex(of: c),
-						idx2 > idx1 {
-						if showHighlight {
-							currentCard?.backgroundColor = .cyan
-						}
-						currentCard = c
-						if showHighlight {
-							currentCard?.backgroundColor = .yellow
-						}
-					}
-				} else {
-					currentCard = c
-					if showHighlight {
-						currentCard?.backgroundColor = .yellow
-					}
-				}
-				break
-			}
-		}
-		
-		switch gesture.state {
-		case .changed:
-			if let controlCard = currentCard {
-				// update card leading edge
-				controlCard.frame.origin.x += translation.x
-				// don't allow drag left past 1.0
-				controlCard.frame.origin.x = max(controlCard.frame.origin.x, 1.0)
 				// update the positions for the rest of the cards
 				UIView.animate(withDuration: 0.1, animations: {
 					self.updateCards(controlCard)
 				})
-				gesture.setTranslation(.zero, in: self)
 			}
 			
 		case .ended:
@@ -244,7 +164,7 @@ class SwitcherView: UIView {
 				let newIDX = max(min(idx - offset, cards.count - 1), 0)
 				doCentering(for: cards[newIDX])
 			}
-
+			
 			currentCard = nil
 			
 		default:
@@ -252,7 +172,7 @@ class SwitcherView: UIView {
 		}
 		
 	}
-	
+
 	func updateCards(_ controlCard: CardView) -> Void {
 		
 		guard let idx = cards.firstIndex(of: controlCard) else {
@@ -306,17 +226,21 @@ class SwitcherView: UIView {
 				let sc = 0.71 + (0.04 * min(pct, 1.0))
 				c.transform = CGAffineTransform(scaleX: sc, y: sc)
 				
-				// set translucent for far left cards
-				if cards.count > 1 {
-					c.alpha = min(1.0, x / 10.0)
+				// set translucent for far left cards, unless it's the "top" card
+				if c == cards.last {
+					c.alpha = 1.0
+				} else {
+					if cards.count > 1 {
+						c.alpha = min(1.0, x / 10.0)
+					}
 				}
 				
 			}
 		}
 		
+		// if we're dragging vertically
 		if y != bounds.midY {
 			
-			var relativeCard: CardView = controlCard
 			var n = idx
 			
 			var nextCard: CardView?
