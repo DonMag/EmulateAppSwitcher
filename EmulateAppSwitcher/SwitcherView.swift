@@ -9,6 +9,8 @@ import UIKit
 
 class SwitcherView: UIView {
 
+	var allowVertical: Bool = false
+	
 	var cards: [CardView] = []
 	
 	var currentCard: CardView?
@@ -120,7 +122,11 @@ class SwitcherView: UIView {
 			if let controlCard = currentCard {
 				cardStartPoint = controlCard.frame.origin
 			}
-			draggingIntent = .undetermined
+			if allowVertical {
+				draggingIntent = .undetermined
+			} else {
+				draggingIntent = .horizontal
+			}
 			
 		case .changed:
 			if draggingIntent == .undetermined {
@@ -192,7 +198,7 @@ class SwitcherView: UIView {
 			//	to 33% of the view width
 			let pct = relativeCard.frame.origin.x / (self.bounds.width * 1.0 / 3.0)
 			// move next card that percentage of the width of a card
-			nextCard.frame.origin.x = relativeCard.frame.origin.x + (relativeCard.frame.size.width * pct) // min(pct, 1.0))
+			nextCard.frame.origin.x = relativeCard.frame.origin.x + (relativeCard.frame.size.width * pct)
 			nextCard.center.y = y
 			relativeCard = nextCard
 			n += 1

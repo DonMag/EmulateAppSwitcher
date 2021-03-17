@@ -8,29 +8,48 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-	let switcherView = SwitcherView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		view.backgroundColor = .systemYellow
 		
-		switcherView.translatesAutoresizingMaskIntoConstraints = false
-		switcherView.backgroundColor = .white
+		let stack = UIStackView()
+		stack.axis = .vertical
+		stack.spacing = 20
+		stack.translatesAutoresizingMaskIntoConstraints = false
 		
-		view.addSubview(switcherView)
+		["Demo", "With Vertical"].forEach { str in
+			let b = UIButton()
+			b.setTitle(str, for: [])
+			b.setTitleColor(.white, for: .normal)
+			b.setTitleColor(.lightGray, for: .highlighted)
+			b.backgroundColor = .systemTeal
+			b.addTarget(self, action: #selector(showDemo(_:)), for: .touchUpInside)
+			stack.addArrangedSubview(b)
+		}
 		
-		// respect safe area
+		view.addSubview(stack)
+		
 		let g = view.safeAreaLayoutGuide
 		
 		NSLayoutConstraint.activate([
-			// constrain switcher view to all 4 sides of safe area
-			switcherView.topAnchor.constraint(equalTo: g.topAnchor, constant: 0.0),
-			switcherView.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 0.0),
-			switcherView.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: 0.0),
-			switcherView.bottomAnchor.constraint(equalTo: g.bottomAnchor, constant: 0.0),
+			stack.widthAnchor.constraint(equalTo: g.widthAnchor, multiplier: 0.75),
+			stack.centerXAnchor.constraint(equalTo: g.centerXAnchor),
+			stack.centerYAnchor.constraint(equalTo: g.centerYAnchor),
 		])
+		
+	}
+	
+	@objc func showDemo(_ sender: Any?) -> Void {
+		
+		let vc = DemoViewController()
+		
+		if let btn = sender as? UIButton,
+		   let t = btn.currentTitle,
+		   t != "Demo" {
+			vc.testVertical = true
+		}
+		
+		navigationController?.pushViewController(vc, animated: true)
 		
 	}
 	
