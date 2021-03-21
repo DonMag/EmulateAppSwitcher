@@ -60,16 +60,15 @@ class CardView: UIView {
 		layer.borderWidth = 1.0
 		layer.borderColor = UIColor.gray.cgColor
 		
-		// shadow
-		layer.shadowColor = UIColor.black.cgColor
-		layer.shadowOpacity = 0.25
-		layer.shadowRadius = 2.0
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		// improves performance
+		// improves shadow performance
 		let pth = UIBezierPath(roundedRect: bounds.offsetBy(dx: -4, dy: 1), cornerRadius: 6)
+		layer.shadowColor = UIColor.black.cgColor
+		layer.shadowOpacity = 0.25
+		layer.shadowRadius = 2.0
 		layer.shadowPath = pth.cgPath
 	}
 }
