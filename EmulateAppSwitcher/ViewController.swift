@@ -41,15 +41,25 @@ class ViewController: UIViewController {
 	
 	@objc func showDemo(_ sender: Any?) -> Void {
 		
-		let vc = DemoViewController()
-		
-		if let btn = sender as? UIButton,
-		   let t = btn.currentTitle,
-		   t != "Demo" {
-			vc.testVertical = true
+		guard let btn = sender as? UIButton,
+			  let t = btn.currentTitle
+		else {
+			return
 		}
-		
-		navigationController?.pushViewController(vc, animated: true)
+
+		switch t {
+		case "Demo":
+			let vc = DemoViewController()
+			navigationController?.pushViewController(vc, animated: true)
+
+		case "With Vertical":
+			let vc = DemoViewController()
+			vc.testVertical = true
+			navigationController?.pushViewController(vc, animated: true)
+
+		default:
+			()
+		}
 		
 	}
 	
